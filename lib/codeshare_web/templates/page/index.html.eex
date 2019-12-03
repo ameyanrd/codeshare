@@ -1,7 +1,7 @@
 <section>
   <h2>Monaco Editor Sample</h2>
 <div id="container" style="width:800px;height:600px;border:1px solid grey">
-        <button id="button1">Select</button>      
+      <font size=5> <b> Language: </b> </font>    
 </div>
 
 <!-- OR ANY OTHER AMD LOADER HERE INSTEAD OF loader.js -->
@@ -33,13 +33,12 @@
             theme: "vs-dark"
         });
     });
-    
-    document.getElementById("button1").onclick = function() {require(['vs/editor/editor.main'], function() {
+    setInterval(function() {require(['vs/editor/editor.main'], function() {
         monaco.editor.setModelLanguage(editor.getModel(),select.value);          
-    });};
+    });},500); 
+    
 </script>
 </section>
-
 <section class="row">
   <article class="column">
     <h2>Resources</h2>
