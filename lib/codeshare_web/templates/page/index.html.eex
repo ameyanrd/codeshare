@@ -1,6 +1,52 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>A productive web framework that<br/>does not compromise speed or maintainability.</p>
+<section>
+  <h2>Monaco Editor Sample</h2>
+<div id="container" style="width:800px;height:600px;border:1px solid grey">
+    Language:
+</div>
+
+<!-- OR ANY OTHER AMD LOADER HERE INSTEAD OF loader.js -->
+<script src="js/monaco-editor/min/vs/loader.js"></script>
+<script>
+    //This code is creating a drop-down select
+    var div = document.querySelector("#container"),
+    frag = document.createDocumentFragment(),
+    select = document.createElement("select");
+
+    select.options.add( new Option("c","c", true, true) );
+    select.options.add( new Option("java","java") );
+    select.options.add( new Option("python","python") );
+    select.options.add( new Option("javascript","javascript") );
+
+
+    frag.appendChild(select);
+    div.appendChild(frag);
+
+
+    // This creates the editor
+    require.config({ paths: { 'vs': 'js/monaco-editor/min/vs' }});
+    var editor;
+    require(['vs/editor/editor.main'], function() {
+        editor = monaco.editor.create(document.getElementById('container'), {
+            value: [
+                ''
+            ].join('\n'),
+            language: select.value,
+            theme: "vs-dark"
+        });
+
+        //Display key events on the console
+        window.editor.getModel().onDidChangeContent((event) => {
+            console.log(event);
+        });
+    });
+
+
+    // Change the current language
+    setInterval(function() {require(['vs/editor/editor.main'], function() {
+        monaco.editor.setModelLanguage(editor.getModel(),select.value);
+    });},500);
+
+</script>
 </section>
 
 <section class="row">
