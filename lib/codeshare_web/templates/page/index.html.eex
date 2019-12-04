@@ -7,32 +7,41 @@
 <!-- OR ANY OTHER AMD LOADER HERE INSTEAD OF loader.js -->
 <script src="js/node_modules/monaco-editor/min/vs/loader.js"></script>
 <script>
+    //This code is creating a drop-down select
     var div = document.querySelector("#container"),
-        frag = document.createDocumentFragment(),
-        select = document.createElement("select");
+    frag = document.createDocumentFragment(),
+    select = document.createElement("select");
 
-        select.options.add( new Option("c","c", true, true) );
-        select.options.add( new Option("java","java") );
-        select.options.add( new Option("python","python") );
-        select.options.add( new Option("javascript","javascript") );
+    select.options.add( new Option("c","c", true, true) );
+    select.options.add( new Option("java","java") );
+    select.options.add( new Option("python","python") );
+    select.options.add( new Option("javascript","javascript") );
 
 
-        frag.appendChild(select);
-        div.appendChild(frag);
+    frag.appendChild(select);
+    div.appendChild(frag);
 
+
+    // This creates the editor
     require.config({ paths: { 'vs': 'js/node_modules/monaco-editor/min/vs' }});
     var editor;
     require(['vs/editor/editor.main'], function() {
         editor = monaco.editor.create(document.getElementById('container'), {
             value: [
-                'function x() {',
-                '\tconsole.log("Hello world!");',
-                '}'
+                ''
             ].join('\n'),
             language: select.value,
             theme: "vs-dark"
         });
+
+        //Display key events on the console
+        window.editor.getModel().onDidChangeContent((event) => {
+            console.log(event);
+        });
     });
+    
+    
+    // Change the current language
     setInterval(function() {require(['vs/editor/editor.main'], function() {
         monaco.editor.setModelLanguage(editor.getModel(),select.value);          
     });},500); 
