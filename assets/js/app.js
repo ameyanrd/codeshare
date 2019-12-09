@@ -37,7 +37,7 @@ class MonacoEditor{
           'editor.inactiveSelectionBackground': '#88000015'
       }
     });
-    var editor1, editorText;
+    var editor1, apiFlag=0;
   monaco.editor.setTheme('myTheme');
     editor1=monaco.editor.create(document.getElementById('container'), {
       value: [
@@ -48,29 +48,40 @@ class MonacoEditor{
       language: 'javascript',
       //theme: 'vs-dark'
     });
-    editorText=editor1.getValue();
+
+    // Change the current language
+    setInterval(function() {
+        monaco.editor.setModelLanguage(editor1.getModel(),select.value);
+    },500);
+
+    apiFlag=0;
     editor1.getModel().onDidChangeContent((event) => {
-        channel.push('shout',{
-            evnt: event,
-            op: {
-                identifier: { major: 1, minor: 1 },
-                range: event.changes[0].range,
-                text: event.changes[0].text,
-                forceMoveMarkers: false
-            },
-            text: editor1.getValue()
-        }); 
+        if(apiFlag==0){
+            channel.push('shout',{
+                evnt: event,
+                // text: editor1.getValue(),
+                user: user,
+                language: select.value
+            }); 
+            
+        }else{
+            apiFlag=0;
+        }
     }); 
     channel.on('shout', function(payload){
-            var curpos = editor1.getPosition();
+            // var curpos = editor1.getPosition();
             console.log(payload.evnt);
-            console.log(payload.op);
-            editorText=payload.text;
-            console.log(editorText);
-            if(payload.text.localeCompare(editor1.getValue())){
-                editor1.executeEdits("user1", [payload.op]);
+            console.log(user);
+            console.log(payload.user);
+            // console.log(editor1.getValue());
+            if(user!=payload.user){ 
+                // editorText=payload.text;
+                apiFlag=1;
+                console.log(payload.language);
+                select.value=payload.language;
+                editor1.executeEdits(payload.user, [payload.evnt.changes[0]]);
             }
-            console.log(editor1.getValue());
+            // console.log(editor1.getValue());
             // editor1.setValue(payload.text);
             // editor1.setPosition(curpos);
     });
@@ -113,6 +124,20 @@ socket.connect()
 let channel = socket.channel("room:lobby", {});
 let presence = new Presence(channel)
 var userColor=generateColor()
+
+//This code is creating a drop-down select
+var div = document.querySelector("#container"),
+frag = document.createDocumentFragment(),
+select = document.createElement("select");
+
+select.options.add( new Option("c","c", true, true) );
+select.options.add( new Option("java","java") );
+select.options.add( new Option("python","python") );
+select.options.add( new Option("javascript","javascript") );
+
+
+frag.appendChild(select);
+div.appendChild(frag);
 
 const m=new MonacoEditor()
 m.editor(userColor)
