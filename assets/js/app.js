@@ -1,8 +1,12 @@
 // We need to import the CSS so that webpack will load it.
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
-import css from "../css/app.css"
-
+import css from "../css/codemirror.css"
+import CodeMirror from "lib/codemirror.js"
+import "mode/javascript/javascript.js"
+import "mode/python/python"
+import "theme/dracula.css"
+import "addon/edit/matchbrackets"
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
 // in "webpack.config.js".
@@ -14,4 +18,25 @@ import "phoenix_html"
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
-// import socket from "./socket"
+import socket from "./socket"
+let channel = socket.channel("room:lobby", {});
+var cm = CodeMirror.fromTextArea(document.getElementById('code'),{
+    mode:  "javascript",
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    theme: "dracula"
+});
+
+
+// cm.on("beforeChange",(cm, changeobj) => {
+//     console.log(changeobj);
+//     channel.push('shout',{
+//         changeobj: changeobj
+//     });
+// })
+// channel.on('shout', function(payload){
+//     console.log(payload.changeobj);
+// })
+
+channel.join();

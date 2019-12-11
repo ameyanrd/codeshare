@@ -2,7 +2,7 @@ defmodule CodeshareWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", CodeshareWeb.RoomChannel
+  # channel "room:lobby", CodeshareWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
