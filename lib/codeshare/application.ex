@@ -11,7 +11,8 @@ defmodule Codeshare.Application do
       # Start the Ecto repository
       Codeshare.Repo,
       # Start the endpoint when the application starts
-      CodeshareWeb.Endpoint
+      CodeshareWeb.Endpoint,
+      CodeshareWeb.Presence
       # Starts a worker by calling: Codeshare.Worker.start_link(arg)
       # {Codeshare.Worker, arg},
     ]
