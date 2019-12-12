@@ -1,5 +1,5 @@
 defmodule CodeshareWeb.UserSocket do
-  use Phoenix.Socket
+  use Phoenix.Socket, log: :debug
 
   ## Channels
   channel "room:lobby", CodeshareWeb.RoomChannel
@@ -20,6 +20,7 @@ defmodule CodeshareWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(_params, socket, _connect_info) do
+    socket = assign(socket, :user_id, Enum.random(0..16777216))
     {:ok, socket}
   end
 
@@ -33,5 +34,10 @@ defmodule CodeshareWeb.UserSocket do
   #     CodeshareWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  def id(_socket), do: nil
+  #def id(_socket), do: nil
+  def id(socket) do
+      IO.inspect socket.assigns.user_id
+     "user_socket:#{socket.assigns.user_id}"
+  end
+  
 end
