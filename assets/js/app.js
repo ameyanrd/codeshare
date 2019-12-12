@@ -69,12 +69,16 @@ cm.on("beforeChange",(cm, changeobj) => {
     console.log(changeobj);
         if(changeobj.origin!=undefined){
         channel.push('shout',{
-            changeobj: changeobj
+            changeobj: changeobj,
+            user: user
         });
     }
 })
 channel.on('shout', function (payload) {
     console.log(payload.changeobj);
+    if(user!=payload.user){
+        cm.replaceRange(payload.changeobj.text, payload.changeobj.from, payload.changeobj.to);
+    }
 })
 
 
