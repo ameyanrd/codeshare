@@ -2,3 +2,8 @@
 <textarea id="code" name="code" style="display: none;">
 </textarea>
 </form>
+Current user:<span id="user"><%=@conn.params["user"]%></span>
+<div >
+    <h2>Users Online:<h2>
+    <ul id="userList"></ul>
+</div>
