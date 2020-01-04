@@ -52,7 +52,8 @@ cm.on("beforeChange", (cm, changeobj) => {
                         channel.push("shout", {
                             type: "delete",
                             character: tempCharacter,
-                            user: user
+                            user: user,
+                            tostring: tempCharacter.toString()
                         })
                     }
 
@@ -62,7 +63,8 @@ cm.on("beforeChange", (cm, changeobj) => {
                         channel.push("shout", {
                             type: "deletenewline",
                             character: tempCharacter,
-                            user: user
+                            user: user,
+                            tostring: tempCharacter.toString()
                         })
                     }
                 }
@@ -73,7 +75,8 @@ cm.on("beforeChange", (cm, changeobj) => {
                 channel.push("shout", {
                     type: "inputnewline",
                     character: tempCharacter,
-                    user: user
+                    user: user,
+                    tostring: tempCharacter.toString()
                 })
             }
             //single insertion (normal case)
@@ -82,7 +85,8 @@ cm.on("beforeChange", (cm, changeobj) => {
                 channel.push("shout", {
                     type: "input",
                     character: tempCharacter,
-                    user: user
+                    user: user,
+                    tostring: tempCharacter.toString()
                 })
             }
         }
@@ -99,7 +103,8 @@ cm.on("beforeChange", (cm, changeobj) => {
                     channel.push("shout", {
                         type: "delete",
                         character: tempCharacter,
-                        user: user
+                        user: user,
+                        tostring: tempCharacter.toString()
                     })
                 }
 
@@ -109,7 +114,8 @@ cm.on("beforeChange", (cm, changeobj) => {
                     channel.push("shout", {
                         type: "deletenewline",
                         character: tempCharacter,
-                        user: user
+                        user: user,
+                        tostring: tempCharacter.toString()
                     })
                 }
             }
@@ -186,6 +192,7 @@ channel.on("updateCursor", function (payload) {
 
 // Remove my cursor when I leave
 presence.onLeave((id,current,leftPres) =>{
+    console.log(markers);
     if(current.metas.length==0){
         markers[id].clear()
        delete markers[id]

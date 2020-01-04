@@ -29,6 +29,7 @@ defmodule CodeshareWeb.RoomChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (room:lobby).
   def handle_in("shout", payload, socket) do
+    Codeshare.Repo.insert(Codeshare.Change.changeset(%Codeshare.Change{}, %{tostring: Map.fetch(payload, :tostring), type: Map.fetch(payload, :type)}))  
     broadcast(socket, "shout", payload)
     {:noreply, socket}
   end
