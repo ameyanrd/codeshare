@@ -245,3 +245,18 @@ return `
     </div>
 `
 }
+
+window.compile = function(){
+    console.log(cm.getValue());
+    console.log(window.language.value);
+    channel.push('compile',{
+        language: window.language.value,
+        text: cm.getValue()
+    }).receive("ok", resp => {
+        if(resp.response.localeCompare("")==0){
+            console.log("Compiled Successfully!")
+        }else{
+            console.log(resp.response)
+        }       
+    })
+}

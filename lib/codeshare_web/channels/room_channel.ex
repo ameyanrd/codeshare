@@ -43,6 +43,23 @@ defmodule CodeshareWeb.RoomChannel do
     {:noreply, socket}
   end
 
+  def handle_in("compile", payload, socket) do
+    IO.puts(payload["text"])
+    IO.puts(payload["language"])
+    case payload["language"] do
+        "text/x-csrc" ->
+            {:ok, file} = File.open("hello.c", [:write])
+            IO.binwrite(file, payload["text"])
+            System.cmd("bash",["script.sh"])
+            File.close(file)
+    end
+    {:ok, response}=File.read("output.txt")
+    File.rm_rf("hello.c")
+    File.rm_rf("output.txt")
+    File.rm_rf("a.out")
+    {:reply, {:ok,%{response: response}}, socket}
+  end
+
   def terminate(_ , socket) do
     # When last active channel is terminating, 
     # empty the database

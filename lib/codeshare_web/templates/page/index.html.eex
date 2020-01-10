@@ -27,6 +27,8 @@ CodeMirror.requireMode("python", function() {
   <option value="text/x-java">Java</option>
 </select>
 
+<button onclick="compile()">Compile</button>
+
 <script>
 function updateMode() {
   var language = document.getElementById("language").value
