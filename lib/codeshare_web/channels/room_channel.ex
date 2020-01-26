@@ -34,6 +34,7 @@ defmodule CodeshareWeb.RoomChannel do
     editor = %Codeshare.Editor{}
     changeset = Codeshare.Editor.changeset(editor, %{data: payload, room_id: socket.assigns.room_id})
     Codeshare.Repo.insert(changeset)
+    IO.puts socket.assigns.room_id
     broadcast(socket, "shout", payload)
     {:noreply, socket}
   end
