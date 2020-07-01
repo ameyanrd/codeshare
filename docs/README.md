@@ -42,7 +42,7 @@ To take care of the above two properties, we decided on maintaining a data struc
 For example, let's say the editor contains a word "CAT" with 'C' as index 1, 'A' as index 2 and 'T' as index 3. We want to insert a charater 'H' between 'C' and 'A', then we give 'H' as an index of 1.5. This leads us to "CHAT".
 Fractional indices are implemented as a list of numbers. For example, above we have [1], [1, 5], [2] and [3].
 
-In general, every character is represented as a pair of the ASCII character and fractional index. For example, say there are two users (# and $) and they perform the operation in the following order:
+In general, every character is represented as a pair of the ASCII character and a list of identifiers where each identifier consists of a decimal number and a site ID. A site ID is unique number associated with a client. For example, say there are two users (# and $) and they perform the operation in the following order:
 1. User # types 'C'.
 2. User # types 'A' in front of 'C'.
 3. User $ types 'T' in front of 'A'.
@@ -52,7 +52,9 @@ Then, following is the representation in CRDT:<br />
 *['C', [[1, #]]]*<br />
 *['H', [[1, #], [5, $]]]*<br />
 *['A', [[2, #]]]*<br />
-*['T', [[3, $]]]*
+*['T', [[3, $]]]*<br />
+Note: Instead of site ID, the user symbol is used above.
+
 
 At a high-level, it can be interpreted as:<br />
 *C - 1*<br />
@@ -62,9 +64,12 @@ At a high-level, it can be interpreted as:<br />
 
 i.e. 'C' has index 1, 'H' has index 1.5, 'A' has index 2 and 'T' has index 3.
 
-Using a data structure like this will consume more space for each client but will help us in maintaining *Commutativity during insertion and deletion* and *Idempotency during deletions*. For a character inserion, a new identifier list is generated and for a charater deletion, the list is returned back to the avaiable pool.
+Using a data structure like this will consume more space for each client but will help us in maintaining *Commutativity during insertion and deletion* and *Idempotency during deletions*. For a character insertion, a new identifier list is generated, and for character deletion, the list is returned to the available pool.
 
 ## Results:
+
+Following is a demo of how Codeshare works:
+![Codeshare Demo](./src/gifs/codeshare3.gif)
 
 ## Applications:
 
